@@ -60,3 +60,27 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# macOS
+.DS_Store
+
+# Xcode local build files
+DerivedData/
+build/
+*.xcuserstate
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Apple certificates / provisioning profiles / keys
+*.key
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.provisionprofile
+
+# Obsidian
+.obsidian/
