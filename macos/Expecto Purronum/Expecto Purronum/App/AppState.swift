@@ -58,6 +58,14 @@ final class AppState: ObservableObject {
         return isMonitoring ? "Monitoring On" : "Monitoring Off"
     }
 
+    var menuBarIconName: String {
+        if isLocked {
+            return "locked"
+        }
+
+        return isMonitoring ? "monitor on" : "monitor off"
+    }
+
     func startMonitoring() {
         guard !isMonitoring else { return }
 

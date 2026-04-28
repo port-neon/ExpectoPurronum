@@ -16,7 +16,11 @@ struct Expecto_PurronumApp: App {
             MenuBarView()
                 .environmentObject(appState)
         } label: {
-            Label(appState.menuStatusTitle, systemImage: appState.isLocked ? "lock.fill" : "keyboard")
+            Image(appState.menuBarIconName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 18, height: 18)
+                .accessibilityLabel(appState.menuStatusTitle)
         }
         .menuBarExtraStyle(.menu)
 
