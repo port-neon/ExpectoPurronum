@@ -22,12 +22,6 @@ enum PermissionService {
         let isGranted = AXIsProcessTrustedWithOptions(options)
         print("[PermissionService] requestAccessibility returned \(isGranted)")
 
-        if !isGranted {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                openAccessibilitySettings()
-            }
-        }
-
         return isGranted
     }
 
@@ -40,12 +34,6 @@ enum PermissionService {
 
         let isGranted = CGRequestListenEventAccess()
         print("[PermissionService] requestInputMonitoring returned \(isGranted)")
-
-        if !isGranted {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                openInputMonitoringSettings()
-            }
-        }
 
         return isGranted
     }

@@ -24,6 +24,11 @@ struct MenuBarView: View {
         }
         .disabled(!appState.isMonitoring)
 
+        Button("Lock") {
+            appState.setLocked(true)
+        }
+        .disabled(appState.isLocked)
+
         Button("Unlock") {
             appState.unlock()
         }
