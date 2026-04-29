@@ -14,33 +14,33 @@ struct MenuBarView: View {
 
         Divider()
 
-        Button("Start Monitoring") {
+        Button(appState.language.startMonitoring) {
             appState.startMonitoring()
         }
         .disabled(appState.isMonitoring)
 
-        Button("Stop Monitoring") {
+        Button(appState.language.stopMonitoring) {
             appState.stopMonitoring()
         }
         .disabled(!appState.isMonitoring)
 
-        Button("Lock") {
+        Button(appState.language.lock) {
             appState.setLocked(true)
         }
         .disabled(appState.isLocked)
 
-        Button("Unlock") {
+        Button(appState.language.unlock) {
             appState.unlock()
         }
         .disabled(!appState.isLocked)
 
         Divider()
 
-        Button("Settings") {
+        Button(appState.language.settings) {
             openWindow(id: "settings")
         }
 
-        Button("Quit") {
+        Button(appState.language.quit) {
             NSApplication.shared.terminate(nil)
         }
     }

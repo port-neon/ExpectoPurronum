@@ -9,8 +9,15 @@ import Foundation
 
 @MainActor
 final class AppState: ObservableObject {
+    private static let languageDefaultsKey = "appLanguage"
+
     @Published private(set) var isMonitoring = false
     @Published private(set) var lockState: KeyboardLockState = .unlocked
+    @Published var language = AppState.savedLanguage() {
+        didSet {
+            UserDefaults.standard.set(language.rawValue, forKey: Self.languageDefaultsKey)
+        }
+    }
     @Published var detectionSettings = DetectionSettings() {
         didSet {
             keyboardGuard.updateSettings(detectionSettings)
@@ -49,14 +56,14 @@ final class AppState: ObservableObject {
 
     var menuStatusTitle: String {
         if isLocked {
-            return "Locked"
+            return language.lockedStatus
         }
 
         if lockState == .suspicious {
-            return "Suspicious"
+            return language.suspicious
         }
 
-        return isMonitoring ? "Monitoring On" : "Monitoring Off"
+        return isMonitoring ? language.monitoringOn : language.monitoringOff
     }
 
     var menuBarIconName: String {
@@ -148,14 +155,10 @@ final class AppState: ObservableObject {
 
         let alert = NSAlert()
         alert.alertStyle = .warning
-        alert.messageText = "Expecto Purronum"
-        alert.informativeText = """
-        Expecto Purronum spell has been cast by the cat-wizard.
-        You can unlock the keyboard anytime with the spell Purrhomora.
-        Or keep it locked with the spell Immeowbulus.
-        """
-        alert.addButton(withTitle: "Purrhomora(Unlock)")
-        alert.addButton(withTitle: "Immeowbulus(Keep locked)")
+        alert.messageText = language.lockAlertTitle
+        alert.informativeText = language.lockAlertMessage
+        alert.addButton(withTitle: language.lockAlertUnlockButton)
+        alert.addButton(withTitle: language.lockAlertKeepLockedButton)
 
         NSApp.activate(ignoringOtherApps: true)
         let response = alert.runModal()
@@ -308,5 +311,14 @@ final class AppState: ObservableObject {
 
         print("[AppState] unlocking because \(reason)")
         unlock()
+    }
+
+    private static func savedLanguage() -> AppLanguage {
+        guard let rawValue = UserDefaults.standard.string(forKey: languageDefaultsKey),
+              let language = AppLanguage(rawValue: rawValue) else {
+            return .english
+        }
+
+        return language
     }
 }
