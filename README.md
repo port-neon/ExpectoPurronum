@@ -73,5 +73,45 @@ Expecto Purronum目前支持：
 - Apple Silicon
 - 苹果芯片
 
+## Download 下载
+
+Download the latest macOS version from the [Releases](../../releases) page.  
+请前往 [Releases](../../releases) 页面下载最新的 macOS 版本。
+
+## Installation / 安装方式
+
+1. Download the latest `.dmg` file.  
+   下载最新的 `.dmg` 文件。
+
+2. Open the `.dmg` file.  
+   打开 `.dmg` 文件。
+
+3. Drag `Expecto Purronum.app` into the `Applications` folder.  
+   将 `Expecto Purronum.app` 拖入 `Applications` 文件夹。
+
+4. Open the app from `Applications`.  
+   从 `Applications` 文件夹中打开 App。
+
+## macOS Security Notice macOS 安全提示
+
+Expecto Purronum is currently distributed outside the Mac App Store and has not yet been notarized by Apple.  
+Expecto Purronum 目前通过 Mac App Store 之外的方式分发，尚未经过 Apple notarization。
+
+When opening the app for the first time, macOS may show a warning that the developer cannot be verified.  
+第一次打开 App 时，macOS 可能会提示无法验证开发者。
+
+To open it anyway, right-click `Expecto Purronum.app`, choose **Open**, then click **Open** again in the warning dialog.  
+如需继续打开，请右键点击 `Expecto Purronum.app`，选择 **Open / 打开**，然后在警告弹窗中再次点击 **Open / 打开**。
+
+If macOS still blocks the app, go to **System Settings → Privacy & Security**, then click **Open Anyway**.  
+如果 macOS 仍然阻止打开，请前往 **System Settings / 系统设置 → Privacy & Security / 隐私与安全性**，然后点击 **Open Anyway / 仍要打开**。
+
+## Permissions 权限说明
+
+Expecto Purronum may require macOS permissions such as **Accessibility** and **Input Monitoring** to work properly.  
+Expecto Purronum 可能需要 macOS 的 **Accessibility / 辅助功能** 和 **Input Monitoring / 输入监控** 权限才能正常工作。
+
+You can enable these permissions in **System Settings → Privacy & Security**.  
+你可以在 **System Settings / 系统设置 → Privacy & Security / 隐私与安全性** 中开启相关权限。
 
 最后...WIN端，即将上线！！！
