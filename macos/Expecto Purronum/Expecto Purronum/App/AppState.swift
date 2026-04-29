@@ -171,15 +171,6 @@ final class AppState: ObservableObject {
         case accessibility
         case inputMonitoring
 
-        var alertMessage: String {
-            switch self {
-            case .accessibility:
-                return "Accessibility permission is required so Expecto Purronum can monitor keyboard state and lock the keyboard when needed."
-            case .inputMonitoring:
-                return "Input Monitoring permission is required so Expecto Purronum can observe keyboard input while monitoring is on."
-            }
-        }
-
         var logName: String {
             switch self {
             case .accessibility:
@@ -213,11 +204,7 @@ final class AppState: ObservableObject {
             return true
         }
 
-        guard showPermissionAlert(for: permission) else {
-            print("[AppState] user denied \(permission.logName) permission prompt")
-            return false
-        }
-
+        print("[AppState] requesting \(permission.logName) permission")
         requestPermission(permission)
         openSystemSettings(for: permission)
 
@@ -249,18 +236,6 @@ final class AppState: ObservableObject {
         case .inputMonitoring:
             PermissionService.openInputMonitoringSettings()
         }
-    }
-
-    private func showPermissionAlert(for permission: RequiredPermission) -> Bool {
-        let alert = NSAlert()
-        alert.alertStyle = .warning
-        alert.messageText = "\(permission.logName) Permission Required"
-        alert.informativeText = permission.alertMessage
-        alert.addButton(withTitle: "Open System Settings")
-        alert.addButton(withTitle: "Deny")
-
-        NSApp.activate(ignoringOtherApps: true)
-        return alert.runModal() == .alertFirstButtonReturn
     }
 
     private func waitForPermission(_ permission: RequiredPermission) async -> Bool {
