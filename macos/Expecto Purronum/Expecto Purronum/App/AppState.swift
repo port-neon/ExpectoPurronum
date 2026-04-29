@@ -13,6 +13,7 @@ final class AppState: ObservableObject {
 
     @Published private(set) var isMonitoring = false
     @Published private(set) var lockState: KeyboardLockState = .unlocked
+    @Published private(set) var launchAtLoginEnabled = LaunchAtLoginService.isEnabled()
     @Published var language = AppState.savedLanguage() {
         didSet {
             UserDefaults.standard.set(language.rawValue, forKey: Self.languageDefaultsKey)
@@ -136,6 +137,20 @@ final class AppState: ObservableObject {
     func unlock() {
         applyLockState(.unlocked)
         keyboardGuard.resetDetection()
+    }
+
+    func setLaunchAtLoginEnabled(_ enabled: Bool) {
+        do {
+            try LaunchAtLoginService.setEnabled(enabled)
+            launchAtLoginEnabled = LaunchAtLoginService.isEnabled()
+        } catch {
+            print("[AppState] failed to update launch at login: \(error)")
+            launchAtLoginEnabled = LaunchAtLoginService.isEnabled()
+        }
+    }
+
+    func refreshLaunchAtLoginStatus() {
+        launchAtLoginEnabled = LaunchAtLoginService.isEnabled()
     }
 
     private func applyLockState(_ state: KeyboardLockState, showsAlert: Bool = true) {

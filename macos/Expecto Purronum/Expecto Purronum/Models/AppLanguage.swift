@@ -191,6 +191,15 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
 
+    var launchAtLogin: String {
+        switch self {
+        case .chinese:
+            return "开机自启动"
+        case .english:
+            return "Launch at Login"
+        }
+    }
+
     var lockAlertTitle: String {
         switch self {
         case .chinese:
