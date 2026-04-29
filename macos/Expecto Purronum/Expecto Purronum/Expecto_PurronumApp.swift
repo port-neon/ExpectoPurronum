@@ -12,15 +12,9 @@ struct Expecto_PurronumApp: App {
     @StateObject private var appState = AppState()
 
     var body: some Scene {
-        MenuBarExtra {
+        MenuBarExtra(appState.menuStatusTitle, image: appState.menuBarIconName) {
             MenuBarView()
                 .environmentObject(appState)
-        } label: {
-            Image(appState.menuBarIconName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 18, height: 18)
-                .accessibilityLabel(appState.menuStatusTitle)
         }
         .menuBarExtraStyle(.menu)
 
