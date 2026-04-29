@@ -68,7 +68,7 @@ Expecto Purronum currently supports:
 Expecto Purronum目前支持：
 
 - macOS 13.0 or later
-- macOS 13.9 及以上的版本
+- macOS 13.0 及以上的版本
 
 - Apple Silicon
 - 苹果芯片
