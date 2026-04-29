@@ -173,7 +173,7 @@ final class AppState: ObservableObject {
         alert.messageText = language.lockAlertTitle
         alert.informativeText = language.lockAlertMessage
         alert.addButton(withTitle: language.lockAlertUnlockButton)
-        alert.addButton(withTitle: language.lockAlertKeepLockedButton)
+        alert.addButton(withTitle: language.lockAlertPauseProtectionButton)
 
         NSApp.activate(ignoringOtherApps: true)
         let response = alert.runModal()
@@ -182,6 +182,8 @@ final class AppState: ObservableObject {
 
         if response == .alertFirstButtonReturn {
             unlock()
+        } else if response == .alertSecondButtonReturn {
+            stopMonitoring()
         }
     }
 

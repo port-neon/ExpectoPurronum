@@ -237,7 +237,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
 
-    var lockAlertKeepLockedButton: String {
+    var lockAlertPauseProtectionButton: String {
         switch self {
         case .chinese:
             return "除喵武器咒（暂停守护）"
