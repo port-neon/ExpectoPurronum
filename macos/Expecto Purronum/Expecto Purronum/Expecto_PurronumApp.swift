@@ -12,11 +12,9 @@ struct Expecto_PurronumApp: App {
     @StateObject private var appState = AppState()
 
     var body: some Scene {
-        MenuBarExtra {
+        MenuBarExtra(appState.menuStatusTitle, image: appState.menuBarIconName) {
             MenuBarView()
                 .environmentObject(appState)
-        } label: {
-            Label(appState.menuStatusTitle, systemImage: appState.isLocked ? "lock.fill" : "keyboard")
         }
         .menuBarExtraStyle(.menu)
 
