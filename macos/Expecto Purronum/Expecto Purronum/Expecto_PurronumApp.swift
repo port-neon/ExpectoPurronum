@@ -18,7 +18,7 @@ struct Expecto_PurronumApp: App {
         }
         .menuBarExtraStyle(.menu)
 
-        Window("Settings", id: "settings") {
+        Window(appState.language.settings, id: "settings") {
             SettingsView()
                 .environmentObject(appState)
         }

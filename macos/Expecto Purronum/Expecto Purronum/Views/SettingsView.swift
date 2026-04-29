@@ -10,17 +10,36 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text("Expecto Purronum")
-                .font(.title2)
-                .fontWeight(.semibold)
+            HStack {
+                Text("Expecto Purronum")
+                    .font(.title2)
+                    .fontWeight(.semibold)
 
-            VStack(alignment: .leading, spacing: 8) {
-                statusRow(title: "Monitoring", value: appState.isMonitoring ? "On" : "Off")
-                statusRow(title: "Keyboard", value: appState.lockState.title)
+                Spacer()
+
+                Picker("", selection: $appState.language) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayName)
+                            .tag(language)
+                    }
+                }
+                .labelsHidden()
+                .frame(width: 120)
             }
 
-            HStack {
-                Button(appState.isMonitoring ? "Stop Monitoring" : "Start Monitoring") {
+            VStack(alignment: .leading, spacing: 8) {
+                statusRow(
+                    title: appState.language.monitoring,
+                    value: appState.isMonitoring ? appState.language.on : appState.language.off
+                )
+                statusRow(
+                    title: appState.language.keyboard,
+                    value: appState.language.title(for: appState.lockState)
+                )
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                Button(appState.isMonitoring ? appState.language.stopMonitoring : appState.language.startMonitoring) {
                     if appState.isMonitoring {
                         appState.stopMonitoring()
                     } else {
@@ -28,7 +47,7 @@ struct SettingsView: View {
                     }
                 }
 
-                Toggle("Locked", isOn: Binding(
+                Toggle(appState.language.locked, isOn: Binding(
                     get: { appState.isLocked },
                     set: { appState.setLocked($0) }
                 ))
@@ -39,19 +58,19 @@ struct SettingsView: View {
 
             VStack(alignment: .leading, spacing: 12) {
                 durationStepper(
-                    title: "Adjacent hold",
+                    title: appState.language.adjacentHold,
                     value: $appState.detectionSettings.adjacentHoldDuration,
                     range: 0.5...3.0
                 )
 
                 durationStepper(
-                    title: "Single key hold",
+                    title: appState.language.singleKeyHold,
                     value: $appState.detectionSettings.singleRegularKeyHoldDuration,
                     range: 1.0...8.0
                 )
 
                 durationStepper(
-                    title: "Modifier hold",
+                    title: appState.language.modifierHold,
                     value: $appState.detectionSettings.singleModifierKeyHoldDuration,
                     range: 1.0...8.0
                 )
