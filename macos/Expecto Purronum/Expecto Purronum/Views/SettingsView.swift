@@ -75,9 +75,20 @@ struct SettingsView: View {
                     range: 1.0...8.0
                 )
             }
+
+            Divider()
+
+            Toggle(appState.language.launchAtLogin, isOn: Binding(
+                get: { appState.launchAtLoginEnabled },
+                set: { appState.setLaunchAtLoginEnabled($0) }
+            ))
+            .toggleStyle(.switch)
         }
         .frame(minWidth: 420, alignment: .leading)
         .padding(24)
+        .onAppear {
+            appState.refreshLaunchAtLoginStatus()
+        }
     }
 
     private func statusRow(title: String, value: String) -> some View {
