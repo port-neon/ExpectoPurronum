@@ -35,33 +35,33 @@ Unlike traditional manual keyboard lockers, There is no need to set the lock in 
 ## Features 功能介绍  
 1. How to start keyboard protection?
    如何开启键盘守护？
-	  - Keyboard protection starts automatically once launched and runs in the background to detect abnormal keyboard input that may be caused by cats.
-	    APP自打开以后就自动开启键盘守护状态，并在后台监测可能由猫猫导致的异常键盘输入。
+- Keyboard protection starts automatically once launched and runs in the background to detect abnormal keyboard input that may be caused by cats.
+  APP自打开以后就自动开启键盘守护状态，并在后台监测可能由猫猫导致的异常键盘输入。
 
 2. How to pause keyboard protection?
    如何关闭键盘守护？
-	  - In Settings, choose “Pause Protection”, or click the menu bar status icon and choose “Pause Protection” from the dropdown menu.
-	    在设置界面选择“暂停守护键盘”或者单击菜单栏状态图标，在下拉菜单里选择“暂停守护键盘”
+- In Settings, choose “Pause Protection”, or click the menu bar status icon and choose “Pause Protection” from the dropdown menu.
+  在设置界面选择“暂停守护键盘”或者单击菜单栏状态图标，在下拉菜单里选择“暂停守护键盘”
 
 3. How to lock the keyboard?
    如何锁定键盘？
-	- The keyboard locks automatically when abnormal input patterns are detected. The required hold durations can be adjusted in Settings:
-	  检测到异常输入模式时自动锁定键盘（键盘被按住的时长也可以在Setting界面自行设置）
+- The keyboard locks automatically when abnormal input patterns are detected. The required hold durations can be adjusted in Settings:
+  检测到异常输入模式时自动锁定键盘（键盘被按住的时长也可以在Setting界面自行设置）
 		1. A single key is held down for 2.5 seconds.
 		   单独一个按键长时间按住2.5秒。
 		2. Two or more adjacent keys are held down for 1.0 second.
 		   有2个及以上的互相临近的键盘被长时间按住1.0秒。
 		3. Certain special keys, such as Caps Lock, are held down for 2.0 seconds.
 		   某些特殊键（大小写转换键等）长时间被按住2.0秒。
-	- Keyboard Lock can also be turn on in Settings, or click the menu bar status icon and choose “Lock” from the dropdown menu.
-	  也可以在设置界面选择打开键盘锁或者单击菜单栏状态图标，在下拉菜单里选择“封印键盘”。
+- Keyboard Lock can also be turn on in Settings, or click the menu bar status icon and choose “Lock” from the dropdown menu.
+  也可以在设置界面选择打开键盘锁或者单击菜单栏状态图标，在下拉菜单里选择“封印键盘”。
 
 4. How to unlock the keyboard?
    如何解锁？
-	- Click the menu bar status icon and choose “Unlock” from the dropdown menu.
-	  通过单击菜单栏状态图标，在下拉菜单里选择“解除封印”。
-	- The keyboard lock is also released automatically when the system goes to sleep.
-	  在电脑系统进入睡眠模式的时候会自动解锁键盘锁。
+- Click the menu bar status icon and choose “Unlock” from the dropdown menu.
+  通过单击菜单栏状态图标，在下拉菜单里选择“解除封印”。
+- The keyboard lock is also released automatically when the system goes to sleep.
+  在电脑系统进入睡眠模式的时候会自动解锁键盘锁。
 
 ## Compatibility 兼容性
 Expecto Purronum currently supports:
