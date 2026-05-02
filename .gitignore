@@ -84,3 +84,106 @@ build/
 
 # Obsidian
 .obsidian/
+
+# ============================================================
+# C++ / Windows Version - Expecto Purronum
+# For writing code on macOS VS Code and testing/building on Windows
+# ============================================================
+
+# ------------------------------------------------------------
+# C / C++ object files and build outputs
+# ------------------------------------------------------------
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# ------------------------------------------------------------
+# Debug symbols and compiler intermediate files
+# ------------------------------------------------------------
+*.pdb
+*.ilk
+*.idb
+*.ipdb
+*.iobj
+*.dSYM/
+
+# ------------------------------------------------------------
+# CMake generated files
+# ------------------------------------------------------------
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Common CMake / build folders
+build/
+cmake-build-*/
+out/
+dist/
+bin/
+obj/
+
+# ------------------------------------------------------------
+# Visual Studio / MSVC
+# ------------------------------------------------------------
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+*.VC.db
+*.VC.VC.opendb
+*.opensdf
+*.sdf
+*.aps
+
+[Bb]uild/
+[Ll]og/
+*.log
+
+# ------------------------------------------------------------
+# VS Code local workspace settings
+# Recommended: ignore all VS Code local settings for cross-platform work
+# because macOS and Windows often use different compiler/debugger paths.
+# ------------------------------------------------------------
+.vscode/
+*.code-workspace
+
+# ------------------------------------------------------------
+# macOS system files
+# These may appear when editing files on macOS.
+# ------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# ------------------------------------------------------------
+# Windows system files
+# ------------------------------------------------------------
+Thumbs.db
+Desktop.ini
+
+# ------------------------------------------------------------
+# Temporary / backup files
+# ------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
