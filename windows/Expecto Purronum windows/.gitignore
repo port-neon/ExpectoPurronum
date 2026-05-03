@@ -1,0 +1,14 @@
+build/
+.vs/
+out/
+.DS_Store
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+!res/
+!res/icons/
+!res/icons/*.ico
+installer/Output/
