@@ -2,6 +2,7 @@
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "Expecto Purronum"
 #define MyAppExeName "ExpectoPurronum.exe"
+#define MingwRuntimeDir "C:\msys64\ucrt64\bin"
 
 [Setup]
 AppId={{B7DE8707-68B7-4B8D-AC38-4F0931C35C8B}
@@ -31,6 +32,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\build\ExpectoPurronum.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
+Source: "{#MingwRuntimeDir}\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MingwRuntimeDir}\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MingwRuntimeDir}\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
