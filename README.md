@@ -231,6 +231,47 @@ Windows 版本主要通过系统托盘运行，并在本地保存设置。
 
 ---
 
+---
+
+## 🕊️ 隐私说明
+
+Expecto Purronum 的目标是判断键盘输入行为是否像“猫猫踩键盘”，而不是记录用户输入内容。
+
+为了实现自动键盘守护，应用需要检测一些键盘事件状态，例如：
+
+- 某个按键是否被长时间按住
+- 是否有多个相邻按键同时被按住
+- 特殊按键是否出现异常长按
+- 当前键盘是否处于锁定 / 解锁状态
+
+Expecto Purronum 不会：
+
+- 记录你具体输入了什么文字
+- 保存你的聊天内容、密码、账号或表单内容
+- 上传键盘输入内容到服务器
+- 进行云端同步或用户行为分析
+- 在后台收集个人身份信息
+
+应用只会在本地根据按键状态和持续时间进行判断，并在检测到疑似猫猫误触时触发键盘锁。
+
+### 本地数据
+
+Expecto Purronum 可能会在本地保存一些应用设置，例如：
+
+- 语言设置
+- 检测时间设置
+- 是否开机自启动
+- 当前守护相关配置
+
+这些设置用于让应用在下次启动时保持你的偏好。
+
+### 开机自启动
+
+如果你启用了开机自启动，Windows 版本会写入当前用户的启动配置，使应用可以在登录系统后自动启动。  
+你可以随时在应用设置中关闭开机自启动。
+
+---
+
 ## 🧩 项目状态
 
 当前版本：
@@ -469,6 +510,45 @@ System Settings
 
 The Windows version mainly runs from the system tray and stores settings locally.  
 If launch at startup is enabled, the app writes the related startup configuration.
+
+---
+
+## 🕊️ Privacy Notice
+
+Expecto Purronum is designed to detect whether keyboard activity looks like “a cat stepping on the keyboard”, not to record what the user types.
+
+To provide automatic keyboard protection, the app needs to check certain keyboard event states, such as:
+
+- Whether a key is being held down for too long
+- Whether multiple nearby keys are being pressed at the same time
+- Whether special keys are held abnormally
+- Whether the keyboard is currently locked or unlocked
+
+Expecto Purronum does not:
+
+- Record the actual text you type
+- Save your chats, passwords, accounts, or form content
+- Upload keyboard input content to any server
+- Perform cloud sync or user behavior analytics
+- Collect personally identifiable information in the background
+
+The app only uses local key-state and timing information to decide whether suspicious input may have occurred, and triggers keyboard lock protection when needed.
+
+### Local Data
+
+Expecto Purronum may save some app settings locally, such as:
+
+- Language preference
+- Detection timing settings
+- Launch at startup preference
+- Current protection-related configuration
+
+These settings are used to keep your preferences when the app starts again.
+
+### Launch at Startup
+
+If launch at startup is enabled, the Windows version writes the related startup configuration for the current user so the app can start automatically after login.  
+You can disable launch at startup from the app settings at any time.
 
 ---
 
