@@ -46,12 +46,7 @@ Expecto Purronum（呼喵护键）是一款为猫咪铲屎官设计的键盘守�
 ## 🪟 Windows 安装方式
 
 1. 从 [Releases](../../releases) 页面下载 Windows 安装包。  
-2. 双击运行：
-
-```text
-ExpectoPurronum-Windows-Setup-v1.1.0.exe
-```
-
+2. 双击运行 `.exe` 文件。
 3. 按照安装向导完成安装。  
 4. 从开始菜单或桌面快捷方式启动 Expecto Purronum。  
 5. 启动后，应用会显示在 Windows 系统托盘区域。  
@@ -355,12 +350,7 @@ ExpectoPurronum-Windows-Setup-v1.1.0.exe
 ## 🪟 Windows Installation
 
 1. Download the Windows installer from the [Releases](../../releases) page.
-2. Double-click:
-
-```text
-ExpectoPurronum-Windows-Setup-v1.1.0.exe
-```
-
+2. Double-click `.exe` .
 3. Follow the installation wizard.
 4. Launch Expecto Purronum from the Start Menu or desktop shortcut.
 5. After launch, the app will appear in the Windows system tray.
