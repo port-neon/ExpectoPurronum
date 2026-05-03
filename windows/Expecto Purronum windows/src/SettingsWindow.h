@@ -21,7 +21,11 @@ private:
     void CreateIfNeeded();
     void CreateControls();
     void PopulateControls(const AppSettings& settings);
-    void SaveFromControls();
+    void RefreshText(AppLanguage language);
+    void PreviewLanguageFromControls();
+    bool SaveFromControls();
+    AppLanguage SelectedLanguage() const;
+    bool HasFocusedDurationInput() const;
     double ReadDoubleControl(int controlId, double fallback) const;
     void SetDoubleControl(int controlId, double value);
 

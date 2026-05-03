@@ -3,6 +3,7 @@
 #include "AppState.h"
 #include "CommandIds.h"
 #include "Localization.h"
+#include "Resource.h"
 
 #include <cstdio>
 #include <iterator>
@@ -48,7 +49,13 @@ void SettingsWindow::Show(const AppSettings& settings) {
 
 void SettingsWindow::Refresh(const AppSettings& settings) {
     if (window_ != nullptr && IsWindowVisible(window_)) {
-        PopulateControls(settings);
+        RefreshText(settings.language);
+        if (!HasFocusedDurationInput()) {
+            SetDoubleControl(IDC_ADJACENT_HOLD, settings.detection.adjacentHoldDuration);
+            SetDoubleControl(IDC_SINGLE_KEY_HOLD, settings.detection.singleRegularKeyHoldDuration);
+            SetDoubleControl(IDC_MODIFIER_HOLD, settings.detection.singleModifierKeyHoldDuration);
+        }
+        SendDlgItemMessageW(window_, IDC_LAUNCH_AT_LOGIN, BM_SETCHECK, settings.launchAtLogin ? BST_CHECKED : BST_UNCHECKED, 0);
     }
 }
 
@@ -59,6 +66,7 @@ LRESULT CALLBACK SettingsWindow::WindowProc(HWND window, UINT message, WPARAM wP
         const auto* create = reinterpret_cast<CREATESTRUCTW*>(lParam);
         self = reinterpret_cast<SettingsWindow*>(create->lpCreateParams);
         SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
+        self->window_ = window;
     }
 
     if (self == nullptr) {
@@ -72,12 +80,19 @@ LRESULT CALLBACK SettingsWindow::WindowProc(HWND window, UINT message, WPARAM wP
     case WM_COMMAND:
         switch (LOWORD(wParam)) {
         case IDC_SAVE_SETTINGS:
-            self->SaveFromControls();
-            ShowWindow(window, SW_HIDE);
+            if (self->SaveFromControls()) {
+                ShowWindow(window, SW_HIDE);
+            }
             return 0;
         case IDC_CANCEL_SETTINGS:
             ShowWindow(window, SW_HIDE);
             return 0;
+        case IDC_LANGUAGE:
+            if (HIWORD(wParam) == CBN_SELCHANGE) {
+                self->PreviewLanguageFromControls();
+                return 0;
+            }
+            break;
         default:
             break;
         }
@@ -99,7 +114,7 @@ void SettingsWindow::RegisterClass() {
     wc.lpfnWndProc = SettingsWindow::WindowProc;
     wc.lpszClassName = kSettingsWindowClass;
     wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
-    wc.hIcon = LoadIconW(nullptr, IDI_APPLICATION);
+    wc.hIcon = LoadIconW(instance_, MAKEINTRESOURCEW(IDI_APP));
     wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     RegisterClassExW(&wc);
 }
@@ -116,8 +131,8 @@ void SettingsWindow::CreateIfNeeded() {
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        460,
-        330,
+        500,
+        390,
         ownerWindow_,
         nullptr,
         instance_,
@@ -127,49 +142,88 @@ void SettingsWindow::CreateIfNeeded() {
 void SettingsWindow::CreateControls() {
     const auto& text = TextFor(appState_.Language());
 
-    MakeControl(window_, L"STATIC", text.language.c_str(), 0, 24, 24, 170, 22, 0);
+    MakeControl(window_, L"STATIC", text.language.c_str(), 0, 24, 24, 170, 22, IDC_LANGUAGE_LABEL);
     HWND language = MakeControl(window_, L"COMBOBOX", L"", CBS_DROPDOWNLIST | WS_TABSTOP, 220, 20, 180, 120, IDC_LANGUAGE);
     SendMessageW(language, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"English"));
-    SendMessageW(language, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"中文"));
+    SendMessageW(language, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"\u4e2d\u6587"));
 
-    MakeControl(window_, L"STATIC", text.adjacentHold.c_str(), 0, 24, 68, 190, 22, 0);
+    MakeControl(window_, L"STATIC", text.adjacentHold.c_str(), 0, 24, 68, 190, 22, IDC_ADJACENT_HOLD_LABEL);
     MakeControl(window_, L"EDIT", L"", WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 220, 64, 100, 24, IDC_ADJACENT_HOLD);
-    MakeControl(window_, L"STATIC", L"seconds", 0, 330, 68, 90, 22, 0);
+    MakeControl(window_, L"STATIC", text.seconds.c_str(), 0, 330, 68, 120, 22, IDC_ADJACENT_HOLD_UNIT);
 
-    MakeControl(window_, L"STATIC", text.singleKeyHold.c_str(), 0, 24, 108, 190, 22, 0);
+    MakeControl(window_, L"STATIC", text.singleKeyHold.c_str(), 0, 24, 108, 190, 22, IDC_SINGLE_KEY_HOLD_LABEL);
     MakeControl(window_, L"EDIT", L"", WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 220, 104, 100, 24, IDC_SINGLE_KEY_HOLD);
-    MakeControl(window_, L"STATIC", L"seconds", 0, 330, 108, 90, 22, 0);
+    MakeControl(window_, L"STATIC", text.seconds.c_str(), 0, 330, 108, 120, 22, IDC_SINGLE_KEY_HOLD_UNIT);
 
-    MakeControl(window_, L"STATIC", text.modifierHold.c_str(), 0, 24, 148, 190, 22, 0);
+    MakeControl(window_, L"STATIC", text.modifierHold.c_str(), 0, 24, 148, 190, 22, IDC_MODIFIER_HOLD_LABEL);
     MakeControl(window_, L"EDIT", L"", WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 220, 144, 100, 24, IDC_MODIFIER_HOLD);
-    MakeControl(window_, L"STATIC", L"seconds", 0, 330, 148, 90, 22, 0);
+    MakeControl(window_, L"STATIC", text.seconds.c_str(), 0, 330, 148, 120, 22, IDC_MODIFIER_HOLD_UNIT);
 
-    MakeControl(window_, L"BUTTON", text.launchAtLogin.c_str(), BS_AUTOCHECKBOX | WS_TABSTOP, 24, 192, 260, 24, IDC_LAUNCH_AT_LOGIN);
+    MakeControl(window_, L"BUTTON", text.launchAtLogin.c_str(), BS_AUTOCHECKBOX | WS_TABSTOP, 24, 192, 320, 24, IDC_LAUNCH_AT_LOGIN);
+    MakeControl(window_, L"STATIC", text.launchAtLoginDescription.c_str(), 0, 44, 222, 420, 38, IDC_LAUNCH_AT_LOGIN_DESCRIPTION);
 
-    MakeControl(window_, L"BUTTON", text.save.c_str(), BS_DEFPUSHBUTTON | WS_TABSTOP, 220, 244, 88, 30, IDC_SAVE_SETTINGS);
-    MakeControl(window_, L"BUTTON", text.cancel.c_str(), BS_PUSHBUTTON | WS_TABSTOP, 320, 244, 88, 30, IDC_CANCEL_SETTINGS);
+    MakeControl(window_, L"STATIC", L"", 0, 24, 282, 260, 24, IDC_SETTINGS_STATUS);
+    MakeControl(window_, L"BUTTON", text.save.c_str(), BS_DEFPUSHBUTTON | WS_TABSTOP, 280, 310, 88, 30, IDC_SAVE_SETTINGS);
+    MakeControl(window_, L"BUTTON", text.cancel.c_str(), BS_PUSHBUTTON | WS_TABSTOP, 380, 310, 88, 30, IDC_CANCEL_SETTINGS);
 }
 
 void SettingsWindow::PopulateControls(const AppSettings& settings) {
-    SetWindowTextW(window_, TextFor(settings.language).settings.c_str());
+    RefreshText(settings.language);
     SendDlgItemMessageW(window_, IDC_LANGUAGE, CB_SETCURSEL, settings.language == AppLanguage::Chinese ? 1 : 0, 0);
     SetDoubleControl(IDC_ADJACENT_HOLD, settings.detection.adjacentHoldDuration);
     SetDoubleControl(IDC_SINGLE_KEY_HOLD, settings.detection.singleRegularKeyHoldDuration);
     SetDoubleControl(IDC_MODIFIER_HOLD, settings.detection.singleModifierKeyHoldDuration);
     SendDlgItemMessageW(window_, IDC_LAUNCH_AT_LOGIN, BM_SETCHECK, settings.launchAtLogin ? BST_CHECKED : BST_UNCHECKED, 0);
+    SetDlgItemTextW(window_, IDC_SETTINGS_STATUS, L"");
 }
 
-void SettingsWindow::SaveFromControls() {
+void SettingsWindow::RefreshText(AppLanguage language) {
+    const auto& text = TextFor(language);
+    SetWindowTextW(window_, text.settings.c_str());
+    SetDlgItemTextW(window_, IDC_LANGUAGE_LABEL, text.language.c_str());
+    SetDlgItemTextW(window_, IDC_ADJACENT_HOLD_LABEL, text.adjacentHold.c_str());
+    SetDlgItemTextW(window_, IDC_ADJACENT_HOLD_UNIT, text.seconds.c_str());
+    SetDlgItemTextW(window_, IDC_SINGLE_KEY_HOLD_LABEL, text.singleKeyHold.c_str());
+    SetDlgItemTextW(window_, IDC_SINGLE_KEY_HOLD_UNIT, text.seconds.c_str());
+    SetDlgItemTextW(window_, IDC_MODIFIER_HOLD_LABEL, text.modifierHold.c_str());
+    SetDlgItemTextW(window_, IDC_MODIFIER_HOLD_UNIT, text.seconds.c_str());
+    SetDlgItemTextW(window_, IDC_LAUNCH_AT_LOGIN, text.launchAtLogin.c_str());
+    SetDlgItemTextW(window_, IDC_LAUNCH_AT_LOGIN_DESCRIPTION, text.launchAtLoginDescription.c_str());
+    SetDlgItemTextW(window_, IDC_SAVE_SETTINGS, text.save.c_str());
+    SetDlgItemTextW(window_, IDC_CANCEL_SETTINGS, text.cancel.c_str());
+}
+
+void SettingsWindow::PreviewLanguageFromControls() {
+    RefreshText(SelectedLanguage());
+    SetDlgItemTextW(window_, IDC_SETTINGS_STATUS, L"");
+}
+
+bool SettingsWindow::SaveFromControls() {
     AppSettings settings = appState_.Settings();
 
-    const auto languageIndex = SendDlgItemMessageW(window_, IDC_LANGUAGE, CB_GETCURSEL, 0, 0);
-    settings.language = languageIndex == 1 ? AppLanguage::Chinese : AppLanguage::English;
+    settings.language = SelectedLanguage();
     settings.detection.adjacentHoldDuration = ReadDoubleControl(IDC_ADJACENT_HOLD, settings.detection.adjacentHoldDuration);
     settings.detection.singleRegularKeyHoldDuration = ReadDoubleControl(IDC_SINGLE_KEY_HOLD, settings.detection.singleRegularKeyHoldDuration);
     settings.detection.singleModifierKeyHoldDuration = ReadDoubleControl(IDC_MODIFIER_HOLD, settings.detection.singleModifierKeyHoldDuration);
     settings.launchAtLogin = SendDlgItemMessageW(window_, IDC_LAUNCH_AT_LOGIN, BM_GETCHECK, 0, 0) == BST_CHECKED;
 
-    appState_.ApplySettings(settings);
+    const bool saved = appState_.ApplySettings(settings);
+    const auto& text = TextFor(appState_.Language());
+    SetDlgItemTextW(window_, IDC_SETTINGS_STATUS, saved ? text.saved.c_str() : text.launchAtLoginFailed.c_str());
+    SendDlgItemMessageW(window_, IDC_LAUNCH_AT_LOGIN, BM_SETCHECK, appState_.Settings().launchAtLogin ? BST_CHECKED : BST_UNCHECKED, 0);
+    return saved;
+}
+
+AppLanguage SettingsWindow::SelectedLanguage() const {
+    const auto languageIndex = SendDlgItemMessageW(window_, IDC_LANGUAGE, CB_GETCURSEL, 0, 0);
+    return languageIndex == 1 ? AppLanguage::Chinese : AppLanguage::English;
+}
+
+bool SettingsWindow::HasFocusedDurationInput() const {
+    const int focusedId = GetDlgCtrlID(GetFocus());
+    return focusedId == IDC_ADJACENT_HOLD ||
+        focusedId == IDC_SINGLE_KEY_HOLD ||
+        focusedId == IDC_MODIFIER_HOLD;
 }
 
 double SettingsWindow::ReadDoubleControl(int controlId, double fallback) const {

@@ -24,8 +24,9 @@ public:
     void HandleTrayEvent(UINT event);
     void HandleGuardStateChanged(KeyboardLockState state);
     void HandleDetectionTimer();
+    void HandlePowerBroadcast(WPARAM event);
     void ShowSettings();
-    void ApplySettings(const AppSettings& settings);
+    bool ApplySettings(const AppSettings& settings);
 
     bool IsMonitoring() const { return isMonitoring_; }
     bool IsLocked() const { return lockState_ == KeyboardLockState::Locked; }
@@ -38,6 +39,7 @@ private:
     void StopMonitoring();
     void SetLocked(bool locked);
     void Unlock();
+    void ClearLockAndDetection();
     void RefreshUi();
     void ShowLockedAlert();
     void SaveSettings();

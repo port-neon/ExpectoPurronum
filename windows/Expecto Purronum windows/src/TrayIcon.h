@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <shellapi.h>
 
+#include <string>
+
 #include "AppLanguage.h"
 #include "KeyboardLockState.h"
 
@@ -17,6 +19,7 @@ public:
     void Remove();
     void Refresh();
     void ShowContextMenu();
+    void ShowNotification(const std::wstring& title, const std::wstring& message, DWORD iconFlags = NIIF_INFO);
 
 private:
     HICON CurrentIcon() const;

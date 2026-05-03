@@ -4,6 +4,7 @@
 
 #include "AppMessages.h"
 #include "AppState.h"
+#include "Resource.h"
 
 namespace {
 constexpr const wchar_t* kMainWindowClass = L"ExpectoPurronumMainWindow";
@@ -23,6 +24,11 @@ LRESULT CALLBACK MainWindowProc(HWND window, UINT message, WPARAM wParam, LPARAM
             g_appState->HandleDetectionTimer();
         }
         return 0;
+    case WM_POWERBROADCAST:
+        if (g_appState) {
+            g_appState->HandlePowerBroadcast(wParam);
+        }
+        return TRUE;
     case WM_APP_GUARD_STATE_CHANGED:
         if (g_appState) {
             g_appState->HandleGuardStateChanged(static_cast<KeyboardLockState>(wParam));
@@ -54,7 +60,7 @@ bool RegisterMainWindowClass(HINSTANCE instance) {
     wc.lpfnWndProc = MainWindowProc;
     wc.lpszClassName = kMainWindowClass;
     wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
-    wc.hIcon = LoadIconW(nullptr, IDI_APPLICATION);
+    wc.hIcon = LoadIconW(instance, MAKEINTRESOURCEW(IDI_APP));
     return RegisterClassExW(&wc) != 0;
 }
 }

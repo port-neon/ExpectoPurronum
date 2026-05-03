@@ -28,11 +28,19 @@ struct LocalizedText {
     std::wstring singleKeyHold;
     std::wstring modifierHold;
     std::wstring launchAtLogin;
+    std::wstring launchAtLoginDescription;
+    std::wstring launchAtLoginEnabled;
+    std::wstring launchAtLoginDisabled;
+    std::wstring launchAtLoginFailed;
     std::wstring language;
+    std::wstring seconds;
     std::wstring save;
     std::wstring cancel;
+    std::wstring saved;
     std::wstring lockedAlertTitle;
     std::wstring lockedAlertMessage;
+    std::wstring lockedAlertUnlockButton;
+    std::wstring lockedAlertPauseButton;
 };
 
 const LocalizedText& TextFor(AppLanguage language);

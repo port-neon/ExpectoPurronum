@@ -4,6 +4,7 @@
 #include "AppState.h"
 #include "CommandIds.h"
 #include "Localization.h"
+#include "Resource.h"
 
 #include <strsafe.h>
 
@@ -28,6 +29,10 @@ bool TrayIcon::Add() {
     data_.hIcon = CurrentIcon();
     StringCchCopyW(data_.szTip, ARRAYSIZE(data_.szTip), Tooltip().c_str());
     added_ = Shell_NotifyIconW(NIM_ADD, &data_) == TRUE;
+    if (added_) {
+        data_.uVersion = NOTIFYICON_VERSION_4;
+        Shell_NotifyIconW(NIM_SETVERSION, &data_);
+    }
     return added_;
 }
 
@@ -46,23 +51,29 @@ void TrayIcon::Refresh() {
     }
 
     data_.hIcon = CurrentIcon();
+    data_.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
     StringCchCopyW(data_.szTip, ARRAYSIZE(data_.szTip), Tooltip().c_str());
     Shell_NotifyIconW(NIM_MODIFY, &data_);
 }
 
 void TrayIcon::ShowContextMenu() {
     const auto& text = TextFor(appState_.Language());
+    const UINT startState = appState_.IsMonitoring() ? MF_DISABLED | MF_CHECKED : 0;
+    const UINT pauseState = appState_.IsMonitoring() ? 0 : MF_DISABLED | MF_CHECKED;
+    const UINT lockState = appState_.IsLocked() ? MF_DISABLED | MF_CHECKED : 0;
+    const UINT unlockState = appState_.IsLocked() ? 0 : MF_DISABLED;
 
     HMENU menu = CreatePopupMenu();
     AppendMenuW(menu, MF_STRING | MF_DISABLED, 0, Tooltip().c_str());
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-    AppendMenuW(menu, MF_STRING | (appState_.IsMonitoring() ? MF_DISABLED : 0), IDM_START_PROTECTION, text.startMonitoring.c_str());
-    AppendMenuW(menu, MF_STRING | (!appState_.IsMonitoring() ? MF_DISABLED : 0), IDM_PAUSE_PROTECTION, text.stopMonitoring.c_str());
-    AppendMenuW(menu, MF_STRING | (appState_.IsLocked() ? MF_DISABLED : 0), IDM_LOCK_KEYBOARD, text.lock.c_str());
-    AppendMenuW(menu, MF_STRING | (!appState_.IsLocked() ? MF_DISABLED : 0), IDM_UNLOCK_KEYBOARD, text.unlock.c_str());
+    AppendMenuW(menu, MF_STRING | startState, IDM_START_PROTECTION, text.startMonitoring.c_str());
+    AppendMenuW(menu, MF_STRING | pauseState, IDM_PAUSE_PROTECTION, text.stopMonitoring.c_str());
+    AppendMenuW(menu, MF_STRING | lockState, IDM_LOCK_KEYBOARD, text.lock.c_str());
+    AppendMenuW(menu, MF_STRING | unlockState, IDM_UNLOCK_KEYBOARD, text.unlock.c_str());
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
     AppendMenuW(menu, MF_STRING, IDM_SETTINGS, text.settings.c_str());
     AppendMenuW(menu, MF_STRING, IDM_QUIT, text.quit.c_str());
+    SetMenuDefaultItem(menu, IDM_SETTINGS, FALSE);
 
     POINT cursor{};
     GetCursorPos(&cursor);
@@ -72,16 +83,35 @@ void TrayIcon::ShowContextMenu() {
     DestroyMenu(menu);
 }
 
+void TrayIcon::ShowNotification(const std::wstring& title, const std::wstring& message, DWORD iconFlags) {
+    if (!added_) {
+        return;
+    }
+
+    data_.uFlags = NIF_INFO;
+    data_.dwInfoFlags = iconFlags;
+    data_.uTimeout = 4000;
+    StringCchCopyW(data_.szInfoTitle, ARRAYSIZE(data_.szInfoTitle), title.c_str());
+    StringCchCopyW(data_.szInfo, ARRAYSIZE(data_.szInfo), message.c_str());
+    Shell_NotifyIconW(NIM_MODIFY, &data_);
+}
+
 HICON TrayIcon::CurrentIcon() const {
+    const int size = GetSystemMetrics(SM_CXSMICON);
+    int iconId = IDI_TRAY_OFF;
     if (appState_.IsLocked()) {
-        return LoadIconW(nullptr, IDI_ERROR);
+        iconId = IDI_TRAY_LOCKED;
+    } else if (appState_.IsMonitoring()) {
+        iconId = IDI_TRAY_ON;
     }
 
-    if (appState_.IsMonitoring()) {
-        return LoadIconW(nullptr, IDI_SHIELD);
-    }
-
-    return LoadIconW(nullptr, IDI_APPLICATION);
+    return static_cast<HICON>(LoadImageW(
+        instance_,
+        MAKEINTRESOURCEW(iconId),
+        IMAGE_ICON,
+        size,
+        size,
+        LR_SHARED));
 }
 
 std::wstring TrayIcon::Tooltip() const {
