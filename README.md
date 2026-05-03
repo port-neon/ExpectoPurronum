@@ -34,6 +34,29 @@ Expecto Purronum（呼喵护键）是一款为猫咪铲屎官设计的键盘守�
 - 🛡️ 支持锁屏 / 睡眠状态下的安全处理，避免影响用户正常输入密码
 
 ---
+## 🍎 macOS 安装方式
+
+1. 下载最新的 `.dmg` 文件。  
+2. 打开 `.dmg` 文件。  
+3. 将 `Expecto Purronum.app` 拖入 `Applications` 文件夹。  
+4. 从 `Applications` 文件夹中打开 App。  
+
+---
+
+## 🪟 Windows 安装方式
+
+1. 从 [Releases](../../releases) 页面下载 Windows 安装包。  
+2. 双击运行：
+
+```text
+ExpectoPurronum-Windows-Setup-v1.1.0.exe
+```
+
+3. 按照安装向导完成安装。  
+4. 从开始菜单或桌面快捷方式启动 Expecto Purronum。  
+5. 启动后，应用会显示在 Windows 系统托盘区域。  
+
+---
 
 ## 🧭 如何使用？
 
@@ -62,13 +85,13 @@ Start Protection
 macOS 端：
 
 ```text
-点击菜单栏图标 → Pause Protection
+点击菜单栏图标 → Pause Protection / 暂停守护键盘
 ```
 
 Windows 端：
 
 ```text
-右键系统托盘图标 → Pause Protection
+右键系统托盘图标 → Pause Protection / 暂停守护键盘
 ```
 
 暂停后，应用不会因为异常输入而自动锁定键盘。
@@ -108,13 +131,13 @@ Lock
 macOS 端：
 
 ```text
-点击菜单栏图标 → Unlock
+点击菜单栏图标 → Unlock / 解除封印
 ```
 
 Windows 端：
 
 ```text
-右键系统托盘图标 → Unlock
+右键系统托盘图标 → Unlock / 解除封印
 ```
 
 或在弹窗中选择解除锁定。
@@ -157,29 +180,6 @@ ExpectoPurronum-Windows-Setup-v1.1.0.exe
 
 ---
 
-## 🍎 macOS 安装方式
-
-1. 下载最新的 `.dmg` 文件。  
-2. 打开 `.dmg` 文件。  
-3. 将 `Expecto Purronum.app` 拖入 `Applications` 文件夹。  
-4. 从 `Applications` 文件夹中打开 App。  
-
----
-
-## 🪟 Windows 安装方式
-
-1. 从 [Releases](../../releases) 页面下载 Windows 安装包。  
-2. 双击运行：
-
-```text
-ExpectoPurronum-Windows-Setup-v1.1.0.exe
-```
-
-3. 按照安装向导完成安装。  
-4. 从开始菜单或桌面快捷方式启动 Expecto Purronum。  
-5. 启动后，应用会显示在 Windows 系统托盘区域。  
-
----
 
 ## 🍎 macOS 安全提示
 
@@ -325,6 +325,48 @@ Its goal is simple: **protect your keyboard even when you are away from your com
 
 ---
 
+## 📦 Download
+
+Download the latest version from the [Releases](../../releases) page.
+
+### macOS
+
+Download the latest `.dmg` file.
+
+### Windows
+
+Download the latest Windows installer:
+
+```text
+ExpectoPurronum-Windows-Setup-v1.1.0.exe
+```
+
+---
+
+## 🍎 macOS Installation
+
+1. Download the latest `.dmg` file.
+2. Open the `.dmg` file.
+3. Drag `Expecto Purronum.app` into the `Applications` folder.
+4. Open the app from `Applications`.
+
+---
+
+## 🪟 Windows Installation
+
+1. Download the Windows installer from the [Releases](../../releases) page.
+2. Double-click:
+
+```text
+ExpectoPurronum-Windows-Setup-v1.1.0.exe
+```
+
+3. Follow the installation wizard.
+4. Launch Expecto Purronum from the Start Menu or desktop shortcut.
+5. After launch, the app will appear in the Windows system tray.
+
+---
+
 ## 🧭 How to Use
 
 ### 1. How to start keyboard protection?
@@ -416,48 +458,6 @@ Expecto Purronum currently supports:
 
 - Windows 10 or later
 - 64-bit Windows
-
----
-
-## 📦 Download
-
-Download the latest version from the [Releases](../../releases) page.
-
-### macOS
-
-Download the latest `.dmg` file.
-
-### Windows
-
-Download the latest Windows installer:
-
-```text
-ExpectoPurronum-Windows-Setup-v1.1.0.exe
-```
-
----
-
-## 🍎 macOS Installation
-
-1. Download the latest `.dmg` file.
-2. Open the `.dmg` file.
-3. Drag `Expecto Purronum.app` into the `Applications` folder.
-4. Open the app from `Applications`.
-
----
-
-## 🪟 Windows Installation
-
-1. Download the Windows installer from the [Releases](../../releases) page.
-2. Double-click:
-
-```text
-ExpectoPurronum-Windows-Setup-v1.1.0.exe
-```
-
-3. Follow the installation wizard.
-4. Launch Expecto Purronum from the Start Menu or desktop shortcut.
-5. After launch, the app will appear in the Windows system tray.
 
 ---
 
